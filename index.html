@@ -615,7 +615,8 @@ document.querySelectorAll(".gift").forEach((g) => {
     setTimeout(() => {
       $("chosenTitle").textContent = info.title;
       $("chosenText").textContent = info.text;
-      $("bonus").hidden = !solvedRiddle;
+      $("bonus").textContent = (solvedRiddle ? "وعشانك شاطرة، " : "ومعها بعد، ") + "بسويلك مشروع من مشاريعك وأساعدك فيه";
+      $("bonus").hidden = false;
       show("s-result");
     }, 1300);
   };
