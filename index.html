@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>هدية لك 🤍</title>
+<title>هدية لك</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -189,11 +189,6 @@
   .bow::before { right: 0; transform: rotate(-25deg); transform-origin: right bottom; }
   .bow::after  { left: 0;  transform: rotate(25deg);  transform-origin: left bottom; }
   .gift.open .lid { transform: translateY(-34px) rotate(-22deg); }
-  .surprise {
-    position: absolute; left: 50%; bottom: 30px; font-size: 38px;
-    transform: translate(-50%, 0) scale(0); transition: transform .7s cubic-bezier(.3,1.6,.5,1) .15s;
-  }
-  .gift.open .surprise { transform: translate(-50%, -46px) scale(1); }
   .gift-label { font-weight: 700; font-size: 16px; line-height: 1.4; }
   .gift-label small { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
   .g1 { --col: #b3122e; --rib: #ffd77a; --halo: rgba(255, 60, 90, .35); }
@@ -201,17 +196,15 @@
   .g3 { --col: #f2f2f2; --rib: #c8102e; --halo: rgba(255, 255, 255, .3); }
   .g3 .box, .g3 .lid { box-shadow: inset 0 -10px 18px rgba(0,0,0,.18), 0 0 22px var(--halo); }
 
-  .chosen-emoji { font-size: 64px; margin-bottom: 4px; display: inline-block; animation: pop 1s cubic-bezier(.3,1.6,.5,1); }
   @keyframes pop { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
   .bonus {
     margin-top: 8px; padding: 16px 14px; border-radius: 18px;
     border: 1px dashed rgba(255, 215, 122, .55); color: var(--gold);
     background: rgba(255, 215, 122, .06);
   }
-  .bonus strong { display: block; font-family: "Aref Ruqaa", serif; font-size: 24px; margin-bottom: 4px; }
   .link-btn { background: none; border: none; color: var(--muted); font: inherit; font-size: 14px; margin-top: 18px; cursor: pointer; text-decoration: underline; opacity: .8; }
 
-  .confetti { position: fixed; top: -20px; z-index: 9; pointer-events: none; font-size: 22px; animation: fall linear forwards; }
+  .confetti { position: fixed; top: -20px; z-index: 9; pointer-events: none; border-radius: 50% 50% 50% 0; box-shadow: 0 0 8px rgba(255,170,210,.7); animation: fall linear forwards; }
   @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: .2; } }
 
   @media (max-width: 420px) {
@@ -237,8 +230,8 @@
 
       <!-- 1. البداية -->
       <div class="screen active" id="s-intro">
-        <h1>عندي لك هدية 🤍</h1>
-        <p>بس قبل… لازم توافقين عليها</p>
+        <h1>عندي لك هدية</h1>
+        <p>تقبلينها؟</p>
         <div class="row">
           <button class="btn primary" id="btnAgree">موافقة</button>
           <button class="btn" id="btnDisagree">مو موافقة</button>
@@ -247,8 +240,8 @@
 
       <!-- 2. اللغز -->
       <div class="screen" id="s-riddle">
-        <h2>طيب… 😏</h2>
-        <p>عشان ترفضين لازم تحلين هاللغز أول</p>
+        <h2>طيب</h2>
+        <p>حلي هاللغز أول</p>
         <div class="riddle-q" id="riddleQ"></div>
         <div class="options" id="riddleOptions"></div>
         <div class="hint" id="riddleHint"></div>
@@ -256,8 +249,8 @@
 
       <!-- 3. بعد حل اللغز -->
       <div class="screen" id="s-solved">
-        <h2>أوووه! 🌸</h2>
-        <p>دامك شاطرة وحليتيه…<br>تستاهلين هدية حلوة زيك</p>
+        <h2>أوه</h2>
+        <p>دامك شاطرة وحليتيه، تستاهلين هدية حلوة زيك</p>
         <div class="row" id="happyRow">
           <button class="btn primary" id="btnHappy">فرحانة</button>
           <button class="btn" id="btnNotHappy">مو فرحانة</button>
@@ -267,19 +260,18 @@
 
       <!-- 4. الهدايا -->
       <div class="screen" id="s-gifts">
-        <h2>اختاري هديتك 🎄</h2>
-        <p>وحدة بس… فكري زين</p>
+        <h2>اختاري هديتك</h2>
         <div class="gifts">
           <button class="gift g1" data-gift="sweater">
-            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">🧶</span></span>
-            <span class="gift-label">بلوفر<small>دافي وحلو</small></span>
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
+            <span class="gift-label">بلوفر</span>
           </button>
           <button class="gift g2" data-gift="accessory">
-            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">💍</span></span>
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
             <span class="gift-label">اكسسوار<small>خاتم أو حلق</small></span>
           </button>
           <button class="gift g3" data-gift="dinner">
-            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">🥪</span></span>
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
             <span class="gift-label">عشاء بالماريوت<small>كلوب ساندويتش</small></span>
           </button>
         </div>
@@ -287,14 +279,12 @@
 
       <!-- 5. النتيجة -->
       <div class="screen" id="s-result">
-        <span class="chosen-emoji" id="chosenEmoji">🎁</span>
-        <h2 id="chosenTitle"></h2>
+                <h2 id="chosenTitle"></h2>
         <p id="chosenText"></p>
         <div class="bonus" id="bonus" hidden>
-          <strong>وعشانك شاطرة ✨</strong>
-          بسويلك مشروع من مشاريعك وأساعدك فيه 🤍
+          وعشانك شاطرة، بسويلك مشروع من مشاريعك وأساعدك فيه
         </div>
-        <button class="link-btn" id="btnChange">أبغى أغيّر هديتي</button>
+        <button class="link-btn" id="btnChange">تغيير الهدية</button>
       </div>
 
     </section>
@@ -305,18 +295,18 @@
    اللغز — غيّر الرقم في ACTIVE_RIDDLE عشان تختار لغز ثاني
    ========================================================= */
 const RIDDLES = [
-  { q: "شي له أسنان… بس ما يعض؟", options: ["المشط", "الكرسي", "الكتاب", "الساعة"], answer: "المشط" },
-  { q: "شي كل ما أخذتي منه… يكبر؟", options: ["الكيكة", "الحفرة", "الشمعة", "الصابونة"], answer: "الحفرة" },
-  { q: "شي يمشي بلا رجول… ويبكي بلا عيون؟", options: ["القلم", "الساعة", "الغيمة", "النهر"], answer: "الغيمة" },
+  { q: "شي له أسنان بس ما يعض؟", options: ["المشط", "الكرسي", "الكتاب", "الساعة"], answer: "المشط" },
+  { q: "شي كل ما أخذتي منه يكبر؟", options: ["الكيكة", "الحفرة", "الشمعة", "الصابونة"], answer: "الحفرة" },
+  { q: "شي يمشي بلا رجول ويبكي بلا عيون؟", options: ["القلم", "الساعة", "الغيمة", "النهر"], answer: "الغيمة" },
   { q: "بيت ما له أبواب ولا شبابيك؟", options: ["الخيمة", "الصندوق", "القلعة", "البيضة"], answer: "البيضة" },
-  { q: "شي تقدرين تمسكينه بيدك اليسار… بس مستحيل تمسكينه باليمين؟", options: ["الجوال", "كوعك اليمين", "القلم", "الكوب"], answer: "كوعك اليمين" },
+  { q: "شي تقدرين تمسكينه بيدك اليسار بس مستحيل تمسكينه باليمين؟", options: ["الجوال", "كوعك اليمين", "القلم", "الكوب"], answer: "كوعك اليمين" },
 ];
 const ACTIVE_RIDDLE = 0;
 
 const GIFTS = {
-  sweater:   { emoji: "🧶", title: "اخترتي البلوفر!", text: "بلوفر دافي يليق عليك… جهزي نفسك للشتا ❄️" },
-  accessory: { emoji: "💍", title: "اخترتي الاكسسوار!", text: "خاتم ولا حلق؟ القرار لك… والذوق علي ✨" },
-  dinner:    { emoji: "🥪", title: "اخترتي عشاء الماريوت!", text: "كلوب ساندويتش بالماريوت… حددي اليوم وأنا جاهز 🍽️" },
+  sweater:   { title: "اخترتي البلوفر", text: "هديتك محجوزة" },
+  accessory: { title: "اخترتي الاكسسوار", text: "خاتم أو حلق، أنتِ اختاري" },
+  dinner:    { title: "اخترتي عشاء الماريوت", text: "كلوب ساندويتش، حددي اليوم" },
 };
 
 /* =========================================================
@@ -577,7 +567,7 @@ function buildRiddle() {
   const box = $("riddleOptions");
   box.innerHTML = "";
   $("riddleHint").textContent = "";
-  const tries = ["قربتي… فكري مرة ثانية 😄", "لا لا 😅 ركزي شوي", "أفا! ترا سهل مرة 🙈"];
+  const tries = ["غلط، جربي مرة ثانية"];
   let wrong = 0;
   R.options.forEach((opt) => {
     const b = document.createElement("button");
@@ -586,7 +576,7 @@ function buildRiddle() {
     b.onclick = () => {
       if (opt === R.answer) {
         b.classList.add("right");
-        $("riddleHint").textContent = "صح عليك! 👏";
+        $("riddleHint").textContent = "صح";
         solvedRiddle = true;
         setTimeout(() => show("s-solved"), 900);
       } else {
@@ -602,7 +592,7 @@ function buildRiddle() {
 let notHappyClicks = 0;
 const shrink = [1, .78, .58, .38];
 const grow   = [1, 1.12, 1.25, 1.4, 1.6];
-const teases = ["متأكدة؟ 🥺", "طيب فكري زين…", "آخر فرصة 😅", "خلاص… ما بقى إلا فرحانة 😌"];
+const teases = ["متأكدة؟", "فكري زين", "آخر فرصة", ""];
 $("btnNotHappy").onclick = () => {
   notHappyClicks++;
   const nh = $("btnNotHappy"), h = $("btnHappy");
@@ -625,7 +615,6 @@ document.querySelectorAll(".gift").forEach((g) => {
     confetti();
     const info = GIFTS[g.dataset.gift];
     setTimeout(() => {
-      $("chosenEmoji").textContent = info.emoji;
       $("chosenTitle").textContent = info.title;
       $("chosenText").textContent = info.text;
       $("bonus").hidden = !solvedRiddle;
@@ -639,13 +628,14 @@ $("btnChange").onclick = () => {
 };
 
 function confetti() {
-  const pieces = ["🌸", "✨", "💗", "🎀", "⭐", "🤍"];
-  for (let i = 0; i < 36; i++) {
+  const colors = ["#ff8fbf", "#ffffff", "#ffd77a", "#e0407f", "#ffc2da"];
+  for (let i = 0; i < 40; i++) {
     const s = document.createElement("span");
     s.className = "confetti";
-    s.textContent = pieces[i % pieces.length];
+    s.style.background = colors[i % colors.length];
     s.style.left = Math.random() * 100 + "vw";
-    s.style.fontSize = 14 + Math.random() * 18 + "px";
+    const z = 6 + Math.random() * 8;
+    s.style.width = z + "px"; s.style.height = z * 1.6 + "px";
     s.style.animationDuration = 2.4 + Math.random() * 2.2 + "s";
     s.style.animationDelay = Math.random() * .6 + "s";
     document.body.appendChild(s);
