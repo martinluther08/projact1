@@ -160,6 +160,7 @@
     background: none; border: none; color: inherit; font: inherit; cursor: pointer;
     display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 6px 0;
   }
+  .gift.faded { opacity: .25; transition: opacity .5s; pointer-events: none; }
   .gift:hover .box-wrap { animation: wiggle .6s ease-in-out; }
   @keyframes wiggle {
     0%,100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); }
@@ -189,8 +190,6 @@
   .bow::before { right: 0; transform: rotate(-25deg); transform-origin: right bottom; }
   .bow::after  { left: 0;  transform: rotate(25deg);  transform-origin: left bottom; }
   .gift.open .lid { transform: translateY(-34px) rotate(-22deg); }
-  .gift-label { font-weight: 700; font-size: 16px; line-height: 1.4; }
-  .gift-label small { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
   .g1 { --col: #b3122e; --rib: #ffd77a; --halo: rgba(255, 60, 90, .35); }
   .g2 { --col: #0f6b3a; --rib: #ff6b8f; --halo: rgba(60, 220, 140, .3); }
   .g3 { --col: #f2f2f2; --rib: #c8102e; --halo: rgba(255, 255, 255, .3); }
@@ -210,7 +209,6 @@
   @media (max-width: 420px) {
     .card { padding: 28px 16px 24px; }
     .box-wrap { transform: scale(.85); }
-    .gift-label { font-size: 14px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .garden { animation: none; }
@@ -261,18 +259,16 @@
       <!-- 4. الهدايا -->
       <div class="screen" id="s-gifts">
         <h2>اختاري هديتك</h2>
+        <p>وحدة بس</p>
         <div class="gifts">
           <button class="gift g1" data-gift="sweater">
             <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
-            <span class="gift-label">بلوفر</span>
           </button>
           <button class="gift g2" data-gift="accessory">
             <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
-            <span class="gift-label">اكسسوار<small>خاتم أو حلق</small></span>
           </button>
           <button class="gift g3" data-gift="dinner">
             <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span></span>
-            <span class="gift-label">عشاء بالماريوت<small>كلوب ساندويتش</small></span>
           </button>
         </div>
       </div>
@@ -284,7 +280,6 @@
         <div class="bonus" id="bonus" hidden>
           وعشانك شاطرة، بسويلك مشروع من مشاريعك وأساعدك فيه
         </div>
-        <button class="link-btn" id="btnChange">تغيير الهدية</button>
       </div>
 
     </section>
@@ -607,11 +602,14 @@ $("btnNotHappy").onclick = () => {
 };
 $("btnHappy").onclick = () => show("s-gifts");
 
-// الهدايا
+// الهدايا (اختيار وحدة بس)
+let giftChosen = false;
 document.querySelectorAll(".gift").forEach((g) => {
   g.onclick = () => {
-    if (g.classList.contains("open")) return;
+    if (giftChosen) return;
+    giftChosen = true;
     g.classList.add("open");
+    document.querySelectorAll(".gift").forEach((o) => { if (o !== g) o.classList.add("faded"); });
     confetti();
     const info = GIFTS[g.dataset.gift];
     setTimeout(() => {
@@ -622,10 +620,6 @@ document.querySelectorAll(".gift").forEach((g) => {
     }, 1300);
   };
 });
-$("btnChange").onclick = () => {
-  document.querySelectorAll(".gift").forEach((g) => g.classList.remove("open"));
-  show("s-gifts");
-};
 
 function confetti() {
   const colors = ["#ff8fbf", "#ffffff", "#ffd77a", "#e0407f", "#ffc2da"];
