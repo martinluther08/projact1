@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>هدية لك 🤍</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #000;
+    --text: #fff7fb;
+    --muted: #e9c9d8;
+    --pink: #ff7eb3;
+    --pink-deep: #e0407f;
+    --gold: #ffd77a;
+    --card: rgba(18, 8, 14, 0.55);
+    --card-border: rgba(255, 170, 210, 0.25);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Tajawal", system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ---------- background light & particles ---------- */
+  #sparkles { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .corner-light {
+    position: fixed; bottom: -20vmax; width: 60vmax; height: 60vmax; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 110, 170, 0.22), rgba(255, 110, 170, 0) 65%);
+    z-index: 0; pointer-events: none; animation: breathe 5s ease-in-out infinite alternate;
+  }
+  .corner-light.left { left: -20vmax; }
+  .corner-light.right { right: -20vmax; animation-delay: -2.5s; }
+  @keyframes breathe { from { opacity: .55; } to { opacity: 1; } }
+
+  /* ---------- lilies ---------- */
+  .garden {
+    position: fixed; bottom: 0; z-index: 2; pointer-events: none;
+    width: min(62vw, 560px); height: min(62vw, 560px);
+    animation: glow 3.6s ease-in-out 3s infinite alternate;
+    filter: drop-shadow(0 0 6px rgba(255, 170, 210, 0.35));
+  }
+  .garden.left { left: 0; }
+  .garden.right { right: 0; transform: scaleX(-1); }
+  @media (max-width: 640px) {
+    .garden { width: 78vw; height: 78vw; }
+  }
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 5px rgba(255, 170, 210, 0.35)) drop-shadow(0 0 0 rgba(255, 220, 240, 0)); }
+    to   { filter: drop-shadow(0 0 14px rgba(255, 150, 200, 0.75)) drop-shadow(0 0 30px rgba(255, 220, 240, 0.35)); }
+  }
+
+  .stem {
+    fill: none; stroke-linecap: round;
+    stroke-dasharray: 1; stroke-dashoffset: 1;
+    animation: grow 1.8s cubic-bezier(.45,.05,.3,1) forwards;
+  }
+  @keyframes grow { to { stroke-dashoffset: 0; } }
+
+  .leaf, .head, .petal, .stamens, .bud {
+    transform-box: view-box;
+    opacity: 0;
+  }
+  .leaf { animation: leafIn 1s ease-out forwards; }
+  @keyframes leafIn { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
+
+  .head { animation: fadeIn .4s ease-out forwards; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .petal { animation: bloom 1.6s cubic-bezier(.2,.8,.25,1) forwards; }
+  @keyframes bloom {
+    0%   { opacity: 0; transform: scale(.25, .12); }
+    30%  { opacity: 1; }
+    100% { opacity: 1; transform: scale(1, 1); }
+  }
+  .stamens { animation: stamenIn 1s ease-out forwards; }
+  @keyframes stamenIn { from { opacity: 0; transform: scale(.2); } to { opacity: 1; transform: scale(1); } }
+
+  .bud { animation: leafIn 1.2s ease-out forwards; }
+
+  .sway { animation: sway 6s ease-in-out infinite alternate; transform-box: view-box; }
+  @keyframes sway { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
+
+  /* ---------- card ---------- */
+  .stage {
+    position: fixed; inset: 0; z-index: 5;
+    display: grid; place-items: center; padding: 16px;
+  }
+  .card {
+    width: min(520px, 100%);
+    padding: 34px 26px 30px;
+    text-align: center;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 0 60px rgba(255, 120, 180, 0.15), inset 0 0 40px rgba(255, 150, 200, 0.05);
+    opacity: 0; transform: translateY(14px) scale(.98);
+    animation: cardIn 1.2s ease-out 2.6s forwards;
+  }
+  @keyframes cardIn { to { opacity: 1; transform: none; } }
+
+  .screen { display: none; }
+  .screen.active { display: block; animation: screenIn .6s ease-out; }
+  @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  h1, h2 {
+    font-family: "Aref Ruqaa", serif;
+    font-weight: 700;
+    margin: 0 0 10px;
+    line-height: 1.5;
+    text-shadow: 0 0 18px rgba(255, 140, 190, 0.55);
+  }
+  h1 { font-size: clamp(30px, 7vw, 44px); }
+  h2 { font-size: clamp(24px, 5.6vw, 34px); }
+  p { margin: 0 0 22px; color: var(--muted); font-size: clamp(16px, 4vw, 19px); line-height: 1.8; }
+
+  .row { display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap; min-height: 80px; }
+
+  .btn {
+    font: inherit; font-weight: 700; font-size: 18px;
+    padding: 13px 30px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(255, 180, 215, 0.5);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+    transition: transform .35s cubic-bezier(.3,1.5,.5,1), box-shadow .25s, background .25s, opacity .4s;
+  }
+  .btn:hover { background: rgba(255, 140, 190, 0.12); }
+  .btn:active { transform: scale(.96); }
+  .btn.primary {
+    border: none;
+    background: linear-gradient(135deg, #ff8fbf, #e0407f);
+    box-shadow: 0 0 22px rgba(255, 110, 170, 0.55);
+  }
+  .btn.primary:hover { box-shadow: 0 0 34px rgba(255, 110, 170, 0.85); }
+
+  /* riddle */
+  .riddle-q {
+    font-size: clamp(19px, 4.8vw, 23px); color: var(--text); font-weight: 700;
+    margin: 6px 0 20px;
+  }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .options .btn { padding: 12px 10px; font-size: 17px; }
+  .options .btn.wrong { animation: shake .45s; border-color: #ff5d7a; }
+  .options .btn.right { background: linear-gradient(135deg, #ff8fbf, #e0407f); border: none; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); }
+  }
+  .hint { min-height: 28px; margin: 14px 0 0; font-size: 16px; color: var(--gold); }
+
+  /* gifts */
+  .gifts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 6px; }
+  .gift {
+    background: none; border: none; color: inherit; font: inherit; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 6px 0;
+  }
+  .gift:hover .box-wrap { animation: wiggle .6s ease-in-out; }
+  @keyframes wiggle {
+    0%,100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); }
+  }
+  .box-wrap { position: relative; width: 84px; height: 92px; }
+  .box {
+    position: absolute; bottom: 0; left: 6px; width: 72px; height: 60px; border-radius: 6px;
+    background:
+      linear-gradient(90deg, transparent 42%, var(--rib) 42%, var(--rib) 58%, transparent 58%),
+      var(--col);
+    box-shadow: inset 0 -10px 18px rgba(0,0,0,.25), 0 0 22px var(--halo);
+  }
+  .lid {
+    position: absolute; bottom: 56px; left: 0; width: 84px; height: 20px; border-radius: 5px;
+    background:
+      linear-gradient(90deg, transparent 42%, var(--rib) 42%, var(--rib) 58%, transparent 58%),
+      var(--col);
+    filter: brightness(1.12);
+    box-shadow: 0 4px 6px rgba(0,0,0,.3);
+    transition: transform .8s cubic-bezier(.3,1.4,.5,1);
+  }
+  .bow { position: absolute; bottom: 18px; left: 50%; width: 0; height: 0; }
+  .bow::before, .bow::after {
+    content: ""; position: absolute; bottom: 0; width: 22px; height: 15px;
+    border: 4px solid var(--rib); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  }
+  .bow::before { right: 0; transform: rotate(-25deg); transform-origin: right bottom; }
+  .bow::after  { left: 0;  transform: rotate(25deg);  transform-origin: left bottom; }
+  .gift.open .lid { transform: translateY(-34px) rotate(-22deg); }
+  .surprise {
+    position: absolute; left: 50%; bottom: 30px; font-size: 38px;
+    transform: translate(-50%, 0) scale(0); transition: transform .7s cubic-bezier(.3,1.6,.5,1) .15s;
+  }
+  .gift.open .surprise { transform: translate(-50%, -46px) scale(1); }
+  .gift-label { font-weight: 700; font-size: 16px; line-height: 1.4; }
+  .gift-label small { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+  .g1 { --col: #b3122e; --rib: #ffd77a; --halo: rgba(255, 60, 90, .35); }
+  .g2 { --col: #0f6b3a; --rib: #ff6b8f; --halo: rgba(60, 220, 140, .3); }
+  .g3 { --col: #f2f2f2; --rib: #c8102e; --halo: rgba(255, 255, 255, .3); }
+  .g3 .box, .g3 .lid { box-shadow: inset 0 -10px 18px rgba(0,0,0,.18), 0 0 22px var(--halo); }
+
+  .chosen-emoji { font-size: 64px; margin-bottom: 4px; display: inline-block; animation: pop 1s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes pop { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
+  .bonus {
+    margin-top: 8px; padding: 16px 14px; border-radius: 18px;
+    border: 1px dashed rgba(255, 215, 122, .55); color: var(--gold);
+    background: rgba(255, 215, 122, .06);
+  }
+  .bonus strong { display: block; font-family: "Aref Ruqaa", serif; font-size: 24px; margin-bottom: 4px; }
+  .link-btn { background: none; border: none; color: var(--muted); font: inherit; font-size: 14px; margin-top: 18px; cursor: pointer; text-decoration: underline; opacity: .8; }
+
+  .confetti { position: fixed; top: -20px; z-index: 9; pointer-events: none; font-size: 22px; animation: fall linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(720deg); opacity: .2; } }
+
+  @media (max-width: 420px) {
+    .card { padding: 28px 16px 24px; }
+    .box-wrap { transform: scale(.85); }
+    .gift-label { font-size: 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .garden { animation: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="corner-light left"></div>
+  <div class="corner-light right"></div>
+  <canvas id="sparkles"></canvas>
+
+  <svg class="garden left" id="gardenLeft" viewBox="0 0 600 600" aria-hidden="true"></svg>
+  <svg class="garden right" id="gardenRight" viewBox="0 0 600 600" aria-hidden="true"></svg>
+
+  <main class="stage">
+    <section class="card" id="card">
+
+      <!-- 1. البداية -->
+      <div class="screen active" id="s-intro">
+        <h1>عندي لك هدية 🤍</h1>
+        <p>بس قبل… لازم توافقين عليها</p>
+        <div class="row">
+          <button class="btn primary" id="btnAgree">موافقة</button>
+          <button class="btn" id="btnDisagree">مو موافقة</button>
+        </div>
+      </div>
+
+      <!-- 2. اللغز -->
+      <div class="screen" id="s-riddle">
+        <h2>طيب… 😏</h2>
+        <p>عشان ترفضين لازم تحلين هاللغز أول</p>
+        <div class="riddle-q" id="riddleQ"></div>
+        <div class="options" id="riddleOptions"></div>
+        <div class="hint" id="riddleHint"></div>
+      </div>
+
+      <!-- 3. بعد حل اللغز -->
+      <div class="screen" id="s-solved">
+        <h2>أوووه! 🌸</h2>
+        <p>دامك شاطرة وحليتيه…<br>تستاهلين هدية حلوة زيك</p>
+        <div class="row" id="happyRow">
+          <button class="btn primary" id="btnHappy">فرحانة</button>
+          <button class="btn" id="btnNotHappy">مو فرحانة</button>
+        </div>
+        <div class="hint" id="happyHint"></div>
+      </div>
+
+      <!-- 4. الهدايا -->
+      <div class="screen" id="s-gifts">
+        <h2>اختاري هديتك 🎄</h2>
+        <p>وحدة بس… فكري زين</p>
+        <div class="gifts">
+          <button class="gift g1" data-gift="sweater">
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">🧶</span></span>
+            <span class="gift-label">بلوفر<small>دافي وحلو</small></span>
+          </button>
+          <button class="gift g2" data-gift="accessory">
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">💍</span></span>
+            <span class="gift-label">اكسسوار<small>خاتم أو حلق</small></span>
+          </button>
+          <button class="gift g3" data-gift="dinner">
+            <span class="box-wrap"><span class="box"></span><span class="lid"><span class="bow"></span></span><span class="surprise">🥪</span></span>
+            <span class="gift-label">عشاء بالماريوت<small>كلوب ساندويتش</small></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5. النتيجة -->
+      <div class="screen" id="s-result">
+        <span class="chosen-emoji" id="chosenEmoji">🎁</span>
+        <h2 id="chosenTitle"></h2>
+        <p id="chosenText"></p>
+        <div class="bonus" id="bonus" hidden>
+          <strong>وعشانك شاطرة ✨</strong>
+          بسويلك مشروع من مشاريعك وأساعدك فيه 🤍
+        </div>
+        <button class="link-btn" id="btnChange">أبغى أغيّر هديتي</button>
+      </div>
+
+    </section>
+  </main>
+
+<script>
+/* =========================================================
+   اللغز — غيّر الرقم في ACTIVE_RIDDLE عشان تختار لغز ثاني
+   ========================================================= */
+const RIDDLES = [
+  { q: "شي له أسنان… بس ما يعض؟", options: ["المشط", "الكرسي", "الكتاب", "الساعة"], answer: "المشط" },
+  { q: "شي كل ما أخذتي منه… يكبر؟", options: ["الكيكة", "الحفرة", "الشمعة", "الصابونة"], answer: "الحفرة" },
+  { q: "شي يمشي بلا رجول… ويبكي بلا عيون؟", options: ["القلم", "الساعة", "الغيمة", "النهر"], answer: "الغيمة" },
+  { q: "بيت ما له أبواب ولا شبابيك؟", options: ["الخيمة", "الصندوق", "القلعة", "البيضة"], answer: "البيضة" },
+  { q: "شي تقدرين تمسكينه بيدك اليسار… بس مستحيل تمسكينه باليمين؟", options: ["الجوال", "كوعك اليمين", "القلم", "الكوب"], answer: "كوعك اليمين" },
+];
+const ACTIVE_RIDDLE = 0;
+
+const GIFTS = {
+  sweater:   { emoji: "🧶", title: "اخترتي البلوفر!", text: "بلوفر دافي يليق عليك… جهزي نفسك للشتا ❄️" },
+  accessory: { emoji: "💍", title: "اخترتي الاكسسوار!", text: "خاتم ولا حلق؟ القرار لك… والذوق علي ✨" },
+  dinner:    { emoji: "🥪", title: "اخترتي عشاء الماريوت!", text: "كلوب ساندويتش بالماريوت… حددي اليوم وأنا جاهز 🍽️" },
+};
+
+/* =========================================================
+   رسم الليلي (SVG)
+   ========================================================= */
+const NS = "http://www.w3.org/2000/svg";
+let uid = 0;
+
+function rng(seed) { // مولد أرقام ثابت عشان الشكل يطلع حلو كل مرة
+  let s = seed;
+  return () => (s = (s * 16807) % 2147483647) / 2147483647;
+}
+
+function el(tag, attrs = {}, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+function defs(svg) {
+  const d = el("defs", {}, svg);
+  d.innerHTML = `
+    <radialGradient id="pinkPetal" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="118">
+      <stop offset="0" stop-color="#f4f1a8"/>
+      <stop offset=".08" stop-color="#c7f08a"/>
+      <stop offset=".18" stop-color="#c2185b"/>
+      <stop offset=".5" stop-color="#ec4f8e"/>
+      <stop offset=".78" stop-color="#ffb8d4"/>
+      <stop offset="1" stop-color="#fff4f9"/>
+    </radialGradient>
+    <radialGradient id="whitePetal" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="118">
+      <stop offset="0" stop-color="#eaf5a0"/>
+      <stop offset=".22" stop-color="#f6fbe0"/>
+      <stop offset=".55" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff0f6"/>
+    </radialGradient>
+    <linearGradient id="petalShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity=".28"/>
+      <stop offset=".45" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".22"/>
+    </linearGradient>
+    <linearGradient id="stemGrad" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#1d4d1f"/>
+      <stop offset="1" stop-color="#5f9e3c"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2f6e2a"/>
+      <stop offset=".5" stop-color="#5ea543"/>
+      <stop offset="1" stop-color="#245a22"/>
+    </linearGradient>
+    <linearGradient id="budGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#6aa84f"/>
+      <stop offset=".55" stop-color="#d9f0c0"/>
+      <stop offset="1" stop-color="#ff9cc4"/>
+    </linearGradient>
+    <radialGradient id="anther" cx=".4" cy=".35" r=".7">
+      <stop offset="0" stop-color="#e2814a"/>
+      <stop offset="1" stop-color="#7a2e12"/>
+    </radialGradient>`;
+}
+
+const PETAL = "M0,0 C13,-16 27,-52 17,-88 C13,-100 7,-110 0,-122 C-7,-110 -13,-100 -17,-88 C-27,-52 -13,-16 0,0 Z";
+const PETAL_WIDE = "M0,0 C18,-16 33,-52 21,-88 C15,-102 7,-110 0,-118 C-7,-110 -15,-102 -21,-88 C-33,-52 -18,-16 0,0 Z";
+
+function bezierPoint(p0, p1, p2, p3, t) {
+  const u = 1 - t;
+  return {
+    x: u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x,
+    y: u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y,
+  };
+}
+function bezierAngle(p0, p1, p2, p3, t) {
+  const a = bezierPoint(p0, p1, p2, p3, Math.max(0, t - .01));
+  const b = bezierPoint(p0, p1, p2, p3, Math.min(1, t + .01));
+  return Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+}
+
+function drawFlowerHead(parent, { x, y, scale, rot, tilt, kind, delay, r }) {
+  const grad = kind === "pink" ? "url(#pinkPetal)" : "url(#whitePetal)";
+  const outer = el("g", { transform: `translate(${x} ${y}) rotate(${rot}) scale(${scale} ${scale * tilt})` }, parent);
+  const head = el("g", { class: "head", style: `animation-delay:${delay}s` }, outer);
+
+  const order = [30, 150, 270, 90, 210, 330]; // الخلفية بعدين الأمامية
+  order.forEach((a, i) => {
+    const back = i < 3;
+    const rotG = el("g", { transform: `rotate(${a + (r() - .5) * 10})` }, head);
+    const p = el("g", { class: "petal", style: `animation-delay:${delay + i * .07}s` }, rotG);
+    const s = back ? 1.04 : .96;
+    const path = back ? PETAL_WIDE : PETAL;
+    el("path", { d: path, fill: grad, transform: `scale(${s})`, stroke: "rgba(255,255,255,.55)", "stroke-width": ".8" }, p);
+    el("path", { d: path, fill: "url(#petalShade)", transform: `scale(${s})`, opacity: back ? "1" : ".7" }, p);
+    // العرق في نص البتلة
+    el("path", { d: "M0,-6 C2,-40 1,-80 0,-112", fill: "none", stroke: kind === "pink" ? "rgba(255,230,240,.55)" : "rgba(200,230,150,.7)", "stroke-width": "1.4", transform: `scale(${s})` }, p);
+    // نقاط الليلي
+    if (kind === "pink") {
+      for (let k = 0; k < 9; k++) {
+        const yy = -18 - r() * 48, xx = (r() - .5) * (6 + Math.abs(yy) * .22);
+        el("ellipse", { cx: xx, cy: yy, rx: .9 + r() * 1.3, ry: 1.4 + r() * 1.8, fill: "#7d0634", opacity: .75 }, p);
+      }
+    } else {
+      for (let k = 0; k < 5; k++) {
+        const yy = -16 - r() * 30, xx = (r() - .5) * 8;
+        el("circle", { cx: xx, cy: yy, r: .6 + r() * .8, fill: "#c98fa7", opacity: .7 }, p);
+      }
+    }
+    if (back) el("path", { d: path, fill: "#000", opacity: ".12", transform: `scale(${s})` }, p);
+  });
+
+  // الأسدية
+  const st = el("g", { class: "stamens", style: `animation-delay:${delay + .8}s` }, head);
+  for (let k = 0; k < 6; k++) {
+    const a = (k * 60 + 15 + (r() - .5) * 20) * Math.PI / 180;
+    const len = 44 + r() * 14;
+    const ex = Math.cos(a) * len, ey = Math.sin(a) * len;
+    const cx = Math.cos(a + .3) * len * .5, cy = Math.sin(a + .3) * len * .5;
+    el("path", { d: `M0,0 Q${cx},${cy} ${ex},${ey}`, fill: "none", stroke: "#d8eaa8", "stroke-width": "1.6" }, st);
+    el("ellipse", { cx: ex, cy: ey, rx: 6.5, ry: 2.6, fill: "url(#anther)", transform: `rotate(${a * 180 / Math.PI + 90} ${ex} ${ey})` }, st);
+  }
+  const pa = (r() * 360) * Math.PI / 180;
+  const px = Math.cos(pa) * 56, py = Math.sin(pa) * 56;
+  el("path", { d: `M0,0 Q${px * .4},${py * .6} ${px},${py}`, fill: "none", stroke: "#bfe08a", "stroke-width": "2.4" }, st);
+  el("circle", { cx: px, cy: py, r: 4, fill: "#9cc95e" }, st);
+  el("circle", { cx: 0, cy: 0, r: 7, fill: "#d9f099", opacity: .9 }, st);
+}
+
+function drawLily(svg, layer, spec, r) {
+  const { start, end, scale, delay, kind, bud } = spec;
+  const p0 = start, p3 = end;
+  const p1 = { x: start.x + (end.x - start.x) * .15 + 30, y: start.y - (start.y - end.y) * .45 };
+  const p2 = { x: end.x - (end.x - start.x) * .25 - 10, y: end.y + (start.y - end.y) * .2 };
+  const d = `M${p0.x},${p0.y} C${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`;
+
+  const g = el("g", { class: "sway", style: `transform-origin:${start.x}px ${start.y}px; animation-delay:${-r() * 6}s` }, layer.stems);
+  el("path", { d, class: "stem", pathLength: 1, stroke: "url(#stemGrad)", "stroke-width": 5.5 * scale, style: `animation-delay:${delay}s` }, g);
+
+  // أوراق
+  const leaves = bud ? 1 : 3;
+  for (let i = 0; i < leaves; i++) {
+    const t = .22 + i * .2 + r() * .06;
+    const pt = bezierPoint(p0, p1, p2, p3, t);
+    const ang = bezierAngle(p0, p1, p2, p3, t);
+    const side = i % 2 ? 1 : -1;
+    const L = (70 + r() * 30) * scale;
+    const lg = el("g", { transform: `translate(${pt.x} ${pt.y}) rotate(${ang + side * 38})` }, g);
+    el("path", {
+      class: "leaf",
+      d: `M0,0 C${L * .3},${-9 * scale} ${L * .7},${-7 * scale} ${L},0 C${L * .7},${6 * scale} ${L * .3},${8 * scale} 0,0 Z`,
+      fill: "url(#leafGrad)", style: `animation-delay:${delay + t * 1.6}s; transform-origin:0 0`,
+    }, lg);
+  }
+
+  const ang = bezierAngle(p0, p1, p2, p3, 1);
+  if (bud) {
+    const bg = el("g", { transform: `translate(${end.x} ${end.y}) rotate(${ang + 90}) scale(${scale})` }, layer.heads);
+    el("path", {
+      class: "bud", d: "M0,4 C12,-10 13,-48 0,-74 C-13,-48 -12,-10 0,4 Z", fill: "url(#budGrad)",
+      stroke: "rgba(255,255,255,.35)", "stroke-width": ".8", style: `animation-delay:${delay + 1.5}s; transform-origin:0 0`,
+    }, bg);
+    return;
+  }
+  drawFlowerHead(layer.heads, {
+    x: end.x, y: end.y, scale, rot: ang + 90 + (r() - .5) * 30, tilt: .78 + r() * .15,
+    kind, delay: delay + 1.5, r,
+  });
+}
+
+function buildGarden(svg, seed) {
+  const r = rng(seed);
+  defs(svg);
+  const layer = { stems: el("g", {}, svg), heads: el("g", {}, svg) };
+  const specs = [
+    { end: { x: 150, y: 215 }, scale: 1.08, kind: "pink" },
+    { end: { x: 330, y: 360 }, scale: .98, kind: "white" },
+    { end: { x: 470, y: 505 }, scale: .8, kind: "pink" },
+    { end: { x: 55,  y: 380 }, scale: .78, kind: "white" },
+    { end: { x: 245, y: 470 }, scale: .7, kind: "pink" },
+    { end: { x: 270, y: 165 }, scale: .7, bud: true },
+    { end: { x: 410, y: 300 }, scale: .62, bud: true },
+  ];
+  specs.forEach((s, i) => {
+    s.start = { x: 10 + r() * 50, y: 610 };
+    s.end.x += (r() - .5) * 20; s.end.y += (r() - .5) * 20;
+    s.delay = .1 + i * .18 + r() * .2;
+    if (seed % 2 === 0 && !s.bud) s.kind = s.kind === "pink" ? "white" : "pink"; // تنويع بين الجهتين
+    drawLily(svg, layer, s, r);
+  });
+}
+
+buildGarden(document.getElementById("gardenLeft"), 12345);
+buildGarden(document.getElementById("gardenRight"), 67890);
+
+/* =========================================================
+   لمعات تطير (canvas)
+   ========================================================= */
+(function sparkles() {
+  const c = document.getElementById("sparkles");
+  const ctx = c.getContext("2d");
+  let W, H, dpr;
+  const parts = [];
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = c.width = innerWidth * dpr; H = c.height = innerHeight * dpr;
+  }
+  addEventListener("resize", resize); resize();
+  function spawn(initial) {
+    const left = Math.random() < .5;
+    const spread = Math.min(W, H) * .55;
+    return {
+      x: left ? Math.random() * spread : W - Math.random() * spread,
+      y: initial ? H - Math.random() * H * .7 : H + 10,
+      vx: (left ? 1 : -1) * (.05 + Math.random() * .25) * dpr,
+      vy: -(.2 + Math.random() * .55) * dpr,
+      r: (.6 + Math.random() * 1.8) * dpr,
+      life: 0, max: 300 + Math.random() * 400,
+      hue: Math.random() < .7 ? 330 + Math.random() * 20 : 45,
+    };
+  }
+  for (let i = 0; i < 70; i++) parts.push(spawn(true));
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < parts.length; i++) {
+      const p = parts[i];
+      p.x += p.vx + Math.sin((p.life + i * 40) / 40) * .25 * dpr; p.y += p.vy; p.life++;
+      const a = Math.sin(Math.PI * Math.min(1, p.life / p.max));
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 6);
+      g.addColorStop(0, `hsla(${p.hue},100%,85%,${.9 * a})`);
+      g.addColorStop(1, `hsla(${p.hue},100%,70%,0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 6, 0, Math.PI * 2); ctx.fill();
+      if (p.life > p.max || p.y < -20) parts[i] = spawn(false);
+    }
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* =========================================================
+   التنقل بين الشاشات
+   ========================================================= */
+const $ = (id) => document.getElementById(id);
+let solvedRiddle = false;
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+
+$("btnAgree").onclick = () => show("s-gifts");
+$("btnDisagree").onclick = () => { buildRiddle(); show("s-riddle"); };
+
+// اللغز
+function buildRiddle() {
+  const R = RIDDLES[ACTIVE_RIDDLE];
+  $("riddleQ").textContent = R.q;
+  const box = $("riddleOptions");
+  box.innerHTML = "";
+  $("riddleHint").textContent = "";
+  const tries = ["قربتي… فكري مرة ثانية 😄", "لا لا 😅 ركزي شوي", "أفا! ترا سهل مرة 🙈"];
+  let wrong = 0;
+  R.options.forEach((opt) => {
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.textContent = opt;
+    b.onclick = () => {
+      if (opt === R.answer) {
+        b.classList.add("right");
+        $("riddleHint").textContent = "صح عليك! 👏";
+        solvedRiddle = true;
+        setTimeout(() => show("s-solved"), 900);
+      } else {
+        b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong");
+        $("riddleHint").textContent = tries[wrong++ % tries.length];
+      }
+    };
+    box.appendChild(b);
+  });
+}
+
+// فرحانة / مو فرحانة
+let notHappyClicks = 0;
+const shrink = [1, .78, .58, .38];
+const grow   = [1, 1.12, 1.25, 1.4, 1.6];
+const teases = ["متأكدة؟ 🥺", "طيب فكري زين…", "آخر فرصة 😅", "خلاص… ما بقى إلا فرحانة 😌"];
+$("btnNotHappy").onclick = () => {
+  notHappyClicks++;
+  const nh = $("btnNotHappy"), h = $("btnHappy");
+  $("happyHint").textContent = teases[notHappyClicks - 1] || "";
+  h.style.transform = `scale(${grow[Math.min(notHappyClicks, grow.length - 1)]})`;
+  if (notHappyClicks >= 4) {
+    nh.style.transform = "scale(0)"; nh.style.opacity = "0";
+    setTimeout(() => { nh.style.display = "none"; }, 400);
+  } else {
+    nh.style.transform = `scale(${shrink[notHappyClicks]})`;
+  }
+};
+$("btnHappy").onclick = () => show("s-gifts");
+
+// الهدايا
+document.querySelectorAll(".gift").forEach((g) => {
+  g.onclick = () => {
+    if (g.classList.contains("open")) return;
+    g.classList.add("open");
+    confetti();
+    const info = GIFTS[g.dataset.gift];
+    setTimeout(() => {
+      $("chosenEmoji").textContent = info.emoji;
+      $("chosenTitle").textContent = info.title;
+      $("chosenText").textContent = info.text;
+      $("bonus").hidden = !solvedRiddle;
+      show("s-result");
+    }, 1300);
+  };
+});
+$("btnChange").onclick = () => {
+  document.querySelectorAll(".gift").forEach((g) => g.classList.remove("open"));
+  show("s-gifts");
+};
+
+function confetti() {
+  const pieces = ["🌸", "✨", "💗", "🎀", "⭐", "🤍"];
+  for (let i = 0; i < 36; i++) {
+    const s = document.createElement("span");
+    s.className = "confetti";
+    s.textContent = pieces[i % pieces.length];
+    s.style.left = Math.random() * 100 + "vw";
+    s.style.fontSize = 14 + Math.random() * 18 + "px";
+    s.style.animationDuration = 2.4 + Math.random() * 2.2 + "s";
+    s.style.animationDelay = Math.random() * .6 + "s";
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 5500);
+  }
+}
+</script>
+</body>
+</html>
