@@ -547,13 +547,27 @@ buildGarden(document.getElementById("gardenRight"), 67890);
 const $ = (id) => document.getElementById(id);
 let solvedRiddle = false;
 
+/* تنبيهات لك عن اختياراتها (ntfy.sh) */
+const NTFY_TOPIC = "hadiya-0e10f530453d";
+let wrongTries = 0;
+function notify(title, message) {
+  try {
+    fetch("https://ntfy.sh/", {
+      method: "POST",
+      keepalive: true,
+      body: JSON.stringify({ topic: NTFY_TOPIC, title, message, tags: ["gift"] }),
+    }).catch(() => {});
+  } catch (e) {}
+}
+notify("فتحت الموقع", "فتحت صفحة الهدية الحين");
+
 function show(id) {
   document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
   $(id).classList.add("active");
 }
 
-$("btnAgree").onclick = () => show("s-gifts");
-$("btnDisagree").onclick = () => { buildRiddle(); show("s-riddle"); };
+$("btnAgree").onclick = () => { notify("ضغطت موافقة", "وافقت على طول"); show("s-gifts"); };
+$("btnDisagree").onclick = () => { notify("ضغطت مو موافقة", "راحت للغز"); buildRiddle(); show("s-riddle"); };
 
 // اللغز
 function buildRiddle() {
@@ -573,9 +587,11 @@ function buildRiddle() {
         b.classList.add("right");
         $("riddleHint").textContent = "صح";
         solvedRiddle = true;
+        notify("حلت اللغز", "حلته بعد " + wrongTries + " محاولات غلط");
         setTimeout(() => show("s-solved"), 900);
       } else {
         b.classList.remove("wrong"); void b.offsetWidth; b.classList.add("wrong");
+        wrongTries++;
         $("riddleHint").textContent = tries[wrong++ % tries.length];
       }
     };
@@ -600,7 +616,7 @@ $("btnNotHappy").onclick = () => {
     nh.style.transform = `scale(${shrink[notHappyClicks]})`;
   }
 };
-$("btnHappy").onclick = () => show("s-gifts");
+$("btnHappy").onclick = () => { notify("ضغطت فرحانة", "ضغطت مو فرحانة " + notHappyClicks + " مرات قبلها"); show("s-gifts"); };
 
 // الهدايا (اختيار وحدة بس)
 let giftChosen = false;
@@ -617,6 +633,7 @@ document.querySelectorAll(".gift").forEach((g) => {
       $("chosenText").textContent = info.text;
       $("bonus").textContent = (solvedRiddle ? "وعشانك شاطرة، " : "ومعها بعد، ") + "بسويلك مشروع من مشاريعك وأساعدك فيه";
       $("bonus").hidden = false;
+      notify("اختارت هديتها", info.title.replace("اخترتي ", "") + (solvedRiddle ? " (جت من طريق اللغز)" : " (وافقت على طول)"));
       show("s-result");
     }, 1300);
   };
